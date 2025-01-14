@@ -1,4 +1,4 @@
-# MEGA-2560
+#include <Arduino.h>
 
 struct pms5003data {
     uint16_t framelen;
@@ -12,11 +12,11 @@ struct pms5003data {
 pms5003data data1;  // Data for first sensor
 pms5003data data2;  // Data for second sensor
 
-// Empirical mass factors for smoke particles (µg/particle)
-const float massFactor1um = 6.29;   // 1 µm particles
-const float massFactor3um = 56.5;   // 3 µm particles
-const float massFactor5um = 78.5;   // 5 µm particles
-const float massFactor10um = 629.0; // 10 µm particles
+// Updated empirical mass factors for smoke particles (\u03bcg/particle)
+const float massFactor1um = 0.000000785;   // 1 \u03bcm particles
+const float massFactor3um = 5.65;    // 3 \u03bcm particles
+const float massFactor5um = 7.85;    // 5 \u03bcm particles
+const float massFactor10um = 62.9;   // 10 \u03bcm particles
 
 void setup() {
     Serial.begin(115200);
@@ -79,26 +79,26 @@ boolean readPMSdata(Stream *s, pms5003data *sensorData) {
 }
 
 void printSensorData(pms5003data &data) {
-    Serial.print("Particles > 0.3µm: "); Serial.println(data.particles_03um);
-    Serial.print("Particles > 0.5µm: "); Serial.println(data.particles_05um);
-    Serial.print("Particles > 1.0µm: "); Serial.println(data.particles_10um);
-    Serial.print("Particles > 2.5µm: "); Serial.println(data.particles_25um);
-    Serial.print("Particles > 5.0µm: "); Serial.println(data.particles_50um);
-    Serial.print("Particles > 10.0µm: "); Serial.println(data.particles_100um);
+    Serial.print("Particles > 0.3\u03bcm: "); Serial.println(data.particles_03um);
+    Serial.print("Particles > 0.5\u03bcm: "); Serial.println(data.particles_05um);
+    Serial.print("Particles > 1.0\u03bcm: "); Serial.println(data.particles_10um);
+    Serial.print("Particles > 2.5\u03bcm: "); Serial.println(data.particles_25um);
+    Serial.print("Particles > 5.0\u03bcm: "); Serial.println(data.particles_50um);
+    Serial.print("Particles > 10.0\u03bcm: "); Serial.println(data.particles_100um);
     Serial.println("----------------------");
 }
 
 void printMassConcentration(pms5003data &data) {
-    // Estimate mass concentration for each fraction (µg/m³)
-    float mass1um = data.particles_10um * massFactor1um;  // 1 µm particles
-    float mass3um = data.particles_25um * massFactor3um;  // 3 µm particles
-    float mass5um = data.particles_50um * massFactor5um;  // 5 µm particles
-    float mass10um = data.particles_100um * massFactor10um; // 10 µm particles
+    // Estimate mass concentration for each fraction (\u03bcg/m\u00b3)
+    float mass1um = data.particles_10um * massFactor1um;  // 1 \u03bcm particles
+    float mass3um = data.particles_25um * massFactor3um;  // 3 \u03bcm particles
+    float mass5um = data.particles_50um * massFactor5um;  // 5 \u03bcm particles
+    float mass10um = data.particles_100um * massFactor10um; // 10 \u03bcm particles
 
     // Print estimated mass concentrations
-    Serial.print("Mass Concentration (PM1.0): "); Serial.print(mass1um); Serial.println(" µg/m³");
-    Serial.print("Mass Concentration (PM3.0): "); Serial.print(mass3um); Serial.println(" µg/m³");
-    Serial.print("Mass Concentration (PM5.0): "); Serial.print(mass5um); Serial.println(" µg/m³");
-    Serial.print("Mass Concentration (PM10): "); Serial.print(mass10um); Serial.println(" µg/m³");
+    Serial.print("Mass Concentration (PM1.0): "); Serial.print(mass1um); Serial.println(" \u03bcg/m\u00b3");
+    Serial.print("Mass Concentration (PM3.0): "); Serial.print(mass3um); Serial.println(" \u03bcg/m\u00b3");
+    Serial.print("Mass Concentration (PM5.0): "); Serial.print(mass5um); Serial.println(" \u03bcg/m\u00b3");
+    Serial.print("Mass Concentration (PM10): "); Serial.print(mass10um); Serial.println(" \u03bcg/m\u00b3");
     Serial.println("____________________________________________________________________________");
 }
